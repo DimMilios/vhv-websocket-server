@@ -1,6 +1,0 @@
-
-
-all:
-	./download source.txt
-
-
