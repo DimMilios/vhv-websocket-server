@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+  h1 Sign Up
+  
+  form(method='POST' action='/auth/signUp')
+    if errors
+      div.form-group
+        for error in errors
+          div.alert.alert-dismissable.alert-danger.fade.show(role="alert")!= error.msg
+            button.close(type="button", data-dismiss="alert", aria-label="Close")
+              span(aria-hidden="true") &times;
+
+    div.form-group
+      label(for="fullName") Full Name
+      input#fullName.form-control(type="text", name="fullName", placeholder='Enter full name', value=user===undefined ? '' : user.fullName)
+    div.form-group
+      label(for="email") Email
+      input#email.form-control(type="email", name="email", placeholder='Email address', required, value=user===undefined ? '' : user.email)
+    div.form-group
+      label(for='password') Password
+      input#password.form-control(type="password", name="password", autocomplete='password', required, placeholder='Enter password')
+    div.form-group
+      label(for='passwordConfirmation') Repeat password
+      input#passwordConfirmation.form-control(type="password", name="passwordConfirmation", autocomplete='password', required, placeholder='Repeat password')
+    button.btn.btn-primary(type='submit') Create Account
+  
+  div Already have an account?
+    a(href="/auth/login")  Log In

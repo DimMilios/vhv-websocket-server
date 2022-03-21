@@ -1,0 +1,2 @@
+## TODOs
+- [] Close inactive client connections on the `subs` list(clients that are subscribed to the `/events` SSE endpoint). A possible solution is to make a ping endpoint (check [ws](https://github.com/websockets/ws#faq) npm package docs). 

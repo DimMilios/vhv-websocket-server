@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "target": "ES6",
+    "moduleResolution": "Node",
+    "typeRoots": ["./global.d.ts"]
+  },
+  "include": ["src/**/*", "global.d.ts"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "files": true
+  }
+}

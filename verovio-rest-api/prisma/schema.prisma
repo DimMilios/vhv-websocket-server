@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                 Int                          @id @default(autoincrement())
+  email              String                       @unique
+  password           String
+  name               String?
+  documents          Document[]
+  commentsDocuments  CommentsOnDocumentsByUsers[]
+  pendingInvitations PendingInvitations[]
+}
+
+model Document {
+  id                 Int                          @id @default(autoincrement())
+  createdAt          DateTime                     @default(now())
+  updatedAt          DateTime                     @updatedAt
+  title              String
+  y_doc_state        String?
+  users              User[]
+  usersComments      CommentsOnDocumentsByUsers[]
+  pendingInvitations PendingInvitations[]
+}
+
+model PendingInvitations {
+  user       User     @relation(fields: [email], references: [email])
+  email      String
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId Int
+
+  createdAt DateTime @default(now())
+  accepted  Boolean  @default(false)
+
+  @@id([email, documentId])
+}
+
+// Comment has to be a strong entity so that the parent-children
+// recursive relationship can be implemented
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  content   String?
+
+  // Self relations
+  parentCommentId  Int?
+  parentComment    Comment?  @relation("ParentComment", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  childrenComments Comment[] @relation("ParentComment")
+
+  usersDocuments CommentsOnDocumentsByUsers[]
+
+  multiSelectElements String?
+}
+
+model CommentsOnDocumentsByUsers {
+  comment    Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId  Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId Int
+
+  createdAt DateTime @default(now())
+
+  @@id([commentId, userId, documentId])
+}

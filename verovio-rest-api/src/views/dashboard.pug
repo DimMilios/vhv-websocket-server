@@ -1,0 +1,110 @@
+extends layout
+
+block content
+
+  div.d-flex.flex-row.justify-content-between.mt-2
+    h1 Dashboard
+    div.d-flex
+      button#new-btn.btn.btn-primary(type="button", data-toggle="modal", data-target="#new-document-modal") New file
+        //- img(src="/image/plus-circle.svg", alt="Add new document")
+
+  if message
+    div.alert.alert-dismissable.alert-success.fade.show.my-3(role="alert")!= message
+      button.close(type="button", data-dismiss="alert", aria-label="Close")
+        span(aria-hidden="true") &times;
+
+  if errors
+    for error in errors
+      div.alert.alert-dismissable.alert-danger.fade.show.my-3(role="alert")!= error.msg
+        button.close(type="button", data-dismiss="alert", aria-label="Close")
+          span(aria-hidden="true") &times;
+      
+  #new-document-modal.modal.fade(tabindex="-1", aria-labelledby="new-document-modalLabel", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5#new-document-modalLabel.modal-title New Score
+          button.close(type="button", data-dismiss="modal", aria-label="Close")
+            span(aria-hidden="true") x
+        .modal-body
+          form#new-document(method='POST', action='/api/documents')
+            .form-group
+              label.col-form-label(for="document-title") Title
+              input#document-title.form-control(type="text", name="document-title")
+            .form-group.float-right
+              button.btn.btn-secondary(type="button", role="button", data-dismiss="modal") Close
+              button.btn.btn-primary.ml-1(type="submit", role="button") Create
+  
+  #invite-collaborator-modal.modal.fade(tabindex="-1", aria-labelledby="invite-collaborator-label", aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5#invite-collaborator-label.modal-title Invite collaborator
+            button.close(type="button", data-dismiss="modal", aria-label="Close")
+              span(aria-hidden="true") x
+          .modal-body
+            form#invite-collaborator
+              .form-group
+                label.col-form-label(for="document-title") Email
+                input#collab-email.form-control(type="text", name="email", autofocus)
+              .form-group.float-right
+                button.btn.btn-secondary(type="button", role="button", data-dismiss="modal") Close
+                button.btn.btn-primary.ml-1(type="submit", role="button") Create URL
+  
+
+  if documentInfo
+    table.table.table-hover.mt-3
+      thead 
+        tr
+          th(scope="col") Name
+          th(scope="col") Last Modified
+          th(scope="col") Created
+          th(scope="col") Collaborators
+          th(scope="col")
+      tbody#document-list
+        for doc in documentInfo
+          tr.document-item(data-doc-id=doc.id)
+            td
+              form.edit-doc-form(id=`edit-doc-${doc.id}`)
+                input.form-control.border-0(type="text", value=doc.title, name="title")
+              
+            td= doc.createdAt
+            td= doc.updatedAt
+            td
+              ul.list-inline
+                for email, index in doc.users
+                  if email == currentUser && doc.users.length == 1
+                    li.list-inline-item= 'Me'
+                  else
+                    if email != currentUser
+                      li.list-inline-item= index==doc.users.length - 1 ? email : email + ', '
+            td
+              div.d-flex.justify-content-end
+                div.dropdown
+                  a.dropdown-toggle(id=`dropdown-menu-${doc.id}`, data-toggle="dropdown")
+                    img(src="/image/three-dots.svg", alt="Context menu", width="20", height="20")
+                  div.dropdown-menu.dropdown-menu-right(aria-labelledby=`dropdown-menu-${doc.id}`)
+                    a.dropdown-item.document-delete(href="#")
+                      div.d-inline-flex.align-items-center
+                        img(src="/image/trash-can.svg", alt="Delete button", width="18", height="18")
+                        span.ml-2 Delete
+                    a.dropdown-item.document-share(href="#", data-target="#invite-collaborator-modal", data-toggle="modal")
+                      div.d-inline-flex.align-items-center
+                        img(src="/image/share.svg", alt="Share button", width="18", height="18")
+                        span.ml-2 Share
+
+                
+                //- button.btn.btn-danger.document-delete(type="button") Delete
+
+                  //- img(src="/image/trash-can.svg", alt="Delete button", width="20", height="20")
+
+
+                //- button.btn.btn-primary.mr-1.document-edit(type="button", data-toggle="collapse" data-target=`#collapse-${doc.id}`)
+                //-   img(src="/image/pencil.svg", alt="Edit button", width="20", height="20")
+
+                //-   div.collapse.edit-collapse(id=`collapse-${doc.id}`)
+                //- form.form-inline.edit-doc-form(id=`edit-doc-${doc.id}`)
+                //-   div.form-group
+                //-     label.sr-only(for="title")
+                //-     input.form-control(type="text", name="title", autofocus, placeholder="Update title")
+                //-     button.btn.btn-primary.ml-1 Update

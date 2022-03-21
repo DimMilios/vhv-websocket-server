@@ -1,0 +1,24 @@
+@keyframes documentLoad {
+  0% {
+    transform: translateY(10px);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-5px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1.0;
+  }
+}
+
+.document-item {
+  cursor: pointer;
+
+  animation: 400ms ease-out 0s 1 documentLoad;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
