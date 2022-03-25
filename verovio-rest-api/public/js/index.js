@@ -1,29 +1,5 @@
 let createDocumentForm = document.querySelector('#new-document');
 
-// createDocumentForm.addEventListener('submit', async event => {
-//   event.preventDefault();
-
-//   let title = event.target.querySelector('input[name="document-title"]');
-//   let createdDoc = await fetch('http://localhost:3001/api/documents', {
-//     method: 'POST',
-//     credentials: 'include',
-//     body: JSON.stringify({
-//       title: title.value,
-//     }),
-//     headers: { 'Content-Type': 'application/json' },
-//   });
-
-//   // let json = await createdDoc.json();
-//   let text = await createdDoc.text();
-//   console.log(text);
-
-// });
-// document.addEventListener('click', event => {
-//   if (event.target.closest('tr.document-item')) return;
-//   $('.collapse.edit-collapse').collapse('hide');
-// })
-
-// window.addEventListener('DOMContentLoaded', () => {
 let documentList = document.querySelector('#document-list');
 // Select a document from the list of documents on the dashboard
 documentList?.addEventListener('click', event => {
@@ -146,9 +122,7 @@ docUpdateForms.forEach(form => {
     });
 
     if (response.ok) {
-      // window.location.href = 'http://localhost:3001/dashboard';
       window.location.reload();
     }
   });
 });
-// });

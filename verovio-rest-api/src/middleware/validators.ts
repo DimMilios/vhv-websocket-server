@@ -60,7 +60,8 @@ export const commentCreateRules = [
     .notEmpty()
     .isString()
     .trim()
-    .escape(),
+    .escape()
+    .unescape(),
   body('documentId')
     .isNumeric().toInt(),
   body('parentCommentId')

@@ -7,15 +7,6 @@ import { notifySubs, subs } from './events';
 
 export const router = express.Router();
 
-// router.get('/:userId', async (req, res) => {
-//   const comments = await prisma.comment.findMany({
-//     where: { userId: Number(req.params.userId) },
-//   });
-
-//   console.log(req.params.userId);
-//   res.status(200).json(comments);
-// });
-
 router.get('/', async (_req, res) => {
   const comments = await prisma.comment.findMany();
   res.status(200).json(comments);
