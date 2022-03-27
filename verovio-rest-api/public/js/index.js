@@ -19,7 +19,8 @@ documentList?.addEventListener('click', event => {
 
     console.log({ docId, doctitle });
     if (doctitle) {
-      window.location.href = `http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`;
+      // window.location.href = `http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`;
+      window.open(`http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`, '_blank');
     }
   }
 });
