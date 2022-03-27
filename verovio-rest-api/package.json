@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "dev-sqlite": "YPERSISTENCE=./prisma/dev.db npm run dev",
-    "build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find ~/tei -type d -name vite-scaffold) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client",
-    "local:build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find .. -type d -name vite-scaffold) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client"
+    "build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find ~/tei -type d -name frontend) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client",
+    "local:build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find .. -type d -name frontend) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
