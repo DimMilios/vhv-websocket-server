@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
@@ -13,7 +12,7 @@ passport.use(
       try {
         const user = await prisma.user.findFirst({
           where: { email },
-          select: { id: true, email: true, password: true },
+          select: { id: true, email: true, password: true, name: true, imageProfileURL: true },
         });
         if (!user)
           return done(null, false, { message: 'Incorrect credentials' });
@@ -31,7 +30,6 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done: any) => {
-  // console.log('Serialize User', user);
   let userId = (user as { id: number }).id;
   done(null, userId);
 });
@@ -41,7 +39,7 @@ passport.deserializeUser(async (userId: number, done: any) => {
     if (typeof userId == 'number') {
       const dbUser = await prisma.user.findFirst({
         where: { id: userId },
-        select: { id: true, email: true, name: true,
+        select: { id: true, email: true, name: true, imageProfileURL: true,
           documents: { 
             select: {
               id: true, createdAt: true, updatedAt: true, title: true, y_doc_state: true,

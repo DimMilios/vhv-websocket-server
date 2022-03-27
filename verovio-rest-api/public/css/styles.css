@@ -13,12 +13,22 @@
   }
 }
 
-.document-item {
+.document-item, .add-new-file {
   cursor: pointer;
 
   animation: 400ms ease-out 0s 1 documentLoad;
 }
 
+.profile-icon {
+  border: 0.2rem solid black;
+  border-radius: 50%;
+}
+
 .dropdown-toggle::after {
   content: none;
+}
+
+label.required::before  {
+  content: '*';
+  color: red;
 }

@@ -4,9 +4,16 @@ block content
 
   div.d-flex.flex-row.justify-content-between.mt-2
     h1 Dashboard
-    div.d-flex
-      button#new-btn.btn.btn-primary(type="button", data-toggle="modal", data-target="#new-document-modal") New file
-        //- img(src="/image/plus-circle.svg", alt="Add new document")
+    div.d-flex.align-items-center
+      div.dropdown
+        a.dropdown-toggle.py-3(data-toggle="dropdown", role="button")
+          img.profile-icon(src=currentUser && currentUser.imageProfileURL ? currentUser.imageProfileURL : "/image/user-profile.png", alt="User profile", width="50", height="50")
+        div.dropdown-menu.dropdown-menu-right.p-0
+            form(action="/auth/logout", method="POST") 
+              button.dropdown-item(type="submit")
+                div.d-inline-flex.align-items-center
+                  img(src="/image/log-out.svg", alt="Delete button", width="18", height="18")
+                  span.ml-2 Log Out
 
   if message
     div.alert.alert-dismissable.alert-success.fade.show.my-3(role="alert")!= message
@@ -72,12 +79,12 @@ block content
             td= doc.updatedAt
             td
               ul.list-inline
-                for email, index in doc.users
-                  if email == currentUser && doc.users.length == 1
+                for user, index in doc.users
+                  if user.email == currentUser.email && doc.users.length == 1
                     li.list-inline-item= 'Me'
                   else
-                    if email != currentUser
-                      li.list-inline-item= index==doc.users.length - 1 ? email : email + ', '
+                    if user.email != currentUser.email
+                      li.list-inline-item= index==doc.users.length - 1 ? user.email : user.email + ', '
             td
               div.d-flex.justify-content-end
                 div.dropdown
@@ -92,19 +99,10 @@ block content
                       div.d-inline-flex.align-items-center
                         img(src="/image/share.svg", alt="Share button", width="18", height="18")
                         span.ml-2 Share
-
-                
-                //- button.btn.btn-danger.document-delete(type="button") Delete
-
-                  //- img(src="/image/trash-can.svg", alt="Delete button", width="20", height="20")
-
-
-                //- button.btn.btn-primary.mr-1.document-edit(type="button", data-toggle="collapse" data-target=`#collapse-${doc.id}`)
-                //-   img(src="/image/pencil.svg", alt="Edit button", width="20", height="20")
-
-                //-   div.collapse.edit-collapse(id=`collapse-${doc.id}`)
-                //- form.form-inline.edit-doc-form(id=`edit-doc-${doc.id}`)
-                //-   div.form-group
-                //-     label.sr-only(for="title")
-                //-     input.form-control(type="text", name="title", autofocus, placeholder="Update title")
-                //-     button.btn.btn-primary.ml-1 Update
+        tr.add-new-file(data-toggle="modal", data-target="#new-document-modal")
+          td(colspan="5")
+            div.d-flex.justify-content-center
+              img(src="/image/plus.svg", alt="New file", width="36", height="36")
+  else
+    div.w-100.d-flex.justify-content-center.add-new-file(data-toggle="modal", data-target="#new-document-modal")
+      img(src="/image/plus.svg", alt="New file", width="36", height="36")

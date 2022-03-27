@@ -3,8 +3,8 @@ extends layout
 block content
 
   h1 Sign Up
-  
-  form(method='POST' action='/auth/signUp')
+  //- action='/auth/signUp' 
+  form#sign-up-form( method='POST' action='/auth/signUp' enctype='multipart/form-data')
     if errors
       div.form-group
         for error in errors
@@ -16,14 +16,17 @@ block content
       label(for="fullName") Full Name
       input#fullName.form-control(type="text", name="fullName", placeholder='Enter full name', value=user===undefined ? '' : user.fullName)
     div.form-group
-      label(for="email") Email
+      label.required(for="email") Email
       input#email.form-control(type="email", name="email", placeholder='Email address', required, value=user===undefined ? '' : user.email)
     div.form-group
-      label(for='password') Password
+      label.required(for='password') Password
       input#password.form-control(type="password", name="password", autocomplete='password', required, placeholder='Enter password')
     div.form-group
-      label(for='passwordConfirmation') Repeat password
+      label.required(for='passwordConfirmation') Repeat password
       input#passwordConfirmation.form-control(type="password", name="passwordConfirmation", autocomplete='password', required, placeholder='Repeat password')
+    div.form-group
+      label(for='profileIcon') Profile icon
+      input#profileIcon.form-control-file(type="file", name="profileIcon", accept="image/*", placeholder='Upload profile icon')
     button.btn.btn-primary(type='submit') Create Account
   
   div Already have an account?

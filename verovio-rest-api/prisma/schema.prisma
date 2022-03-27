@@ -12,6 +12,7 @@ model User {
   email              String                       @unique
   password           String
   name               String?
+  imageProfileURL    String?
   documents          Document[]
   commentsDocuments  CommentsOnDocumentsByUsers[]
   pendingInvitations PendingInvitations[]

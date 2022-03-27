@@ -7,16 +7,6 @@ import { documentCreateRules } from '../../middleware/validators';
 import { dashboardDocuments } from '../../util/format';
 export const router = express.Router();
 
-// router.get('/:documentId', async (req, res) => {
-//   const documentId = req.params.documentId;
-
-//   const document = await prisma.document.findFirst({
-//     include: { comments: true },
-//     where: { id: Number(documentId) },
-//   });
-//   res.json(document);
-// });
-
 router.post(
   '/',
   requireAuth,

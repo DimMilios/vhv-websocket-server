@@ -59,9 +59,6 @@ wss.on('connection', setupWSConnection(prisma));
 server.on('upgrade', (request: any, socket, head) => {
   // @ts-ignore
   sessionParser(request, {}, () => {
-    // console.log('Session is parsed!');
-    // console.log(JSON.stringify(request.session, null, 2));
-
     if (!request.session || !request.session.passport || !request.session.passport.user) {
       socket.destroy();
       return;
@@ -71,10 +68,6 @@ server.on('upgrade', (request: any, socket, head) => {
       wss.emit('connection', ws, request);
     });
   });
-
-  // wss.handleUpgrade(request, socket, head, ws => {
-  //   wss.emit('connection', ws, request);
-  // });
 });
 
 app.use('/', indexRouter);

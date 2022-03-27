@@ -18,7 +18,7 @@ router.get('/', requireAuth, async (req, res, next) => {
           some: { id: docId },
         },
       },
-      select: { id: true, name: true, email: true },
+      select: { id: true, name: true, email: true, imageProfileURL: true },
     });
     res.status(200).json(users);
   } catch (error) {
@@ -27,17 +27,6 @@ router.get('/', requireAuth, async (req, res, next) => {
   }
 });
 
-// We should add the collaborator to a pending invite list instead of
-// immediately connecting them to the document. Then, they can accept
-// the invitation and join the document themselves.
-
-// const invited = await prisma.user.update({
-//   data: {
-//     documents: { connect: { id: documentId } }
-//   },
-//   where: { email },
-// });
-// console.log(invited);
 
 // Sent from the inviter
 // /api/users/invite/invitee_email
@@ -112,8 +101,3 @@ router.get('/join', requireAuth, async (req, res, next) => {
     next(error);
   }
 });
-
-// router.get('/', async (req, res) => {
-//   const users = await prisma.user.findMany();
-//   res.status(200).json(users);
-// });

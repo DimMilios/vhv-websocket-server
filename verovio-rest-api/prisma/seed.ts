@@ -25,7 +25,8 @@ const userData: Prisma.UserCreateInput[] = [
   {
     email: 'dim@prisma.io',
     password: hashPassword('123', saltRounds),
-    name: 'Dimitris DenSouLew',
+    name: 'Dimitris Milios',
+    imageProfileURL: 'http://localhost:3001/profile-icons/man.png',
     documents: {
       connect: [{ id: 1 }, { id: 2 }]
     }
@@ -34,6 +35,7 @@ const userData: Prisma.UserCreateInput[] = [
     email: 'nick@prisma.io',
     password: hashPassword('123', saltRounds),
     name: 'Nikos Pappas',
+    imageProfileURL: 'http://localhost:3001/profile-icons/man2.png',
     documents: {
       connect: [{ id: 1 }, { id: 2 }]
     }
@@ -42,6 +44,7 @@ const userData: Prisma.UserCreateInput[] = [
     email: 'maria@prisma.io',
     password: hashPassword('123', saltRounds),
     name: 'Maria Pappa',
+    imageProfileURL: 'http://localhost:3001/profile-icons/woman.png',
     documents: {
       connect: { id: 1 }
     }
