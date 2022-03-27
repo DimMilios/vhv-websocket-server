@@ -16,10 +16,7 @@ documentList?.addEventListener('click', event => {
   if (currentElem) {
     let docId = Number(currentElem.dataset.docId);
     let doctitle = currentElem.querySelector('input[name="title"]')?.value;
-
-    console.log({ docId, doctitle });
     if (doctitle) {
-      // window.location.href = `http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`;
       window.open(`http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`, '_blank');
     }
   }

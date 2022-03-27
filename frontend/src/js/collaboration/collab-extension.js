@@ -183,7 +183,6 @@ export function updateHandler(clients = defaultClients()) {
           .map((u) => ({ ...u, online: connectedIds.includes(u.id) }))
           .sort((a, b) => b.online - a.online),
       });
-      console.log(state.users)
       render(html`${userListTemplate(state.users)}`, onlineElem);
       // Initialize bootstrap tooltips
       $('[data-toggle="tooltip"]').tooltip();

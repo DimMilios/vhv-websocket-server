@@ -50,26 +50,20 @@ let contextMenu = (clientId, elemRefId, targetX, targetY, handleClick) =>
     </div>
   `;
 
-let simpleIndicator = (clientId, elemRefId, targetX, targetY, name) => {
-  let translateY = targetY - 25;
-  
-  let dropUpElem = document.querySelector('.dropup.btn-group');
-  if (dropUpElem) {
-    translateY =  targetY - dropUpElem.getBoundingClientRect().height;
-    console.log('translateY changed', { old: targetY, new: translateY })
+let simpleIndicator = (clientId, elemRefId, targetX, targetY, staffY, name) => {
+  let dropUpHeight = document.querySelector('.dropup.btn-group')?.getBoundingClientRect().height || 0;
+  let singleSelectRef = document.querySelector(`[data-ref-id="${elemRefId}"]`);
+  if (singleSelectRef) {
+    let d = new DOMMatrix(window.getComputedStyle(singleSelectRef).getPropertyValue('transform'));
+    targetY = d.f - singleSelectRef.getBoundingClientRect().height - dropUpHeight;
+    console.log({ translateY: d.f, singleSelectHeight:singleSelectRef.getBoundingClientRect().height,  targetY})
+  } else {
+    targetY -= dropUpHeight;
   }
-
-  console.log({ translateY, clientId, elemRefId, targetX, targetY, name });
-
-  // translateY = document.querySelector(`.single-select[data-ref-id=${elemRefId}]`).getBoundingClientRect().height;
-
-  // let translateY = `${
-  //   dropUpElem ? targetY - 50 : targetY - 25
-  // }`;
 
   return html`<div
     class="users-div"
-    style="transform: translate(${targetX}px, ${translateY}px);"
+    style="transform: translate(${targetX}px, ${targetY}px);"
     data-client-id=${clientId}
     data-ref-id=${elemRefId}
   >
@@ -108,37 +102,18 @@ export let userAwarenessTemplate = (clientId, elemRefId, name) => {
         commentFormTemplate(handleSingleComment([elemRefId], coords)),
         document.querySelector('#post-comment .modal-content')
       );
-    } else if (/^history/.test(id)) {
-      let editor = getAceEditor();
-      let undoManager = editor.getSession().getUndoManager();
-
-      console.log(undoManager.$undoStack);
-      console.log({ elemRefId })
-      let [ ,line, field, subfield ] = elemRefId.match(/-.*L(\d+)F(\d+)S?(\d+)?/);
-
-      line = parseInt(line, 10) - 1;
-
-      for (let item of undoManager.$undoStack) {
-        if (item[0].start.row == line && item[0].end.row == line) {
-          console.log('change for element line', item);
-          // editor.getSession().redoChanges(item, true);
-        }
-      }
-      
     } else {
       console.log('Element does not have id');
     }
   };
-  const { targetX, targetY } = getCoordinatesWithOffset(
+  const { targetX, targetY, staffY } = getCoordinatesWithOffset(
     el,
     document.querySelector('#input')
   );
 
-  // return html`${simpleIndicator(clientId, elemRefId, targetX, targetY, name)}`;
-
   return html`${clientId == yProvider.awareness.clientID
     ? contextMenu(clientId, elemRefId, targetX, targetY, handleClick)
-    : simpleIndicator(clientId, elemRefId, targetX, targetY, name)}`;
+    : simpleIndicator(clientId, elemRefId, targetX, targetY, staffY, name)}`;
 };
 
 export let singleSelectTemplate = (clientId, elemRefId, color) => {
