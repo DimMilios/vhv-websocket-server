@@ -1,17 +1,17 @@
 import express from 'express';
-import asyncHandler from 'express-async-handler';
 import { validationResult } from 'express-validator';
 import passport from 'passport';
 import prisma from '../config/db-client';
 import { loginRules, userCreateRules } from '../middleware/validators';
 import { hashPassword } from '../util/passwordUtil';
 import formidable from 'formidable';
-import path from 'path';
 import { URL } from 'url';
 
 export const router = express.Router();
 
-router.get('/login', (_req, res) => res.render('login'));
+router.get('/login', (_req, res) => {
+  res.render('login');
+});
 
 router.post(
   '/login',
@@ -48,8 +48,11 @@ router.post(
               name: user.name,
               imageProfileURL: user.imageProfileURL,
             })
-          )
-          .redirect('/dashboard');
+          );
+
+        let session = req.session as any;
+
+        session?.joinURL ? res.redirect(session.joinURL) : res.redirect('/dashboard');
       })
     })(req, res, next);
   },

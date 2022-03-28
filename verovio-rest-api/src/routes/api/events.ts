@@ -20,8 +20,8 @@ router.get('/comments',
       return res.status(400).json(JSON.stringify(errors.array()));
     }
 
-    let docId = parseInt(req.query.docId as string, 10);
-    let clientId = parseInt(req.query.clientId as string, 10);
+    let docId = parseInt(req?.query?.docId as string, 10);
+    let clientId = parseInt(req?.query?.clientId as string, 10);
     // let userId = req.user?.id ?? 1;
     
     docId = Number(docId);

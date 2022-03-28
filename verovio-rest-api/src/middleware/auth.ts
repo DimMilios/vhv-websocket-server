@@ -1,11 +1,12 @@
 import express from 'express';
 
 export const requireAuth = (
-  req: express.Request,
+  req: any,
   res: express.Response,
   next: express.NextFunction
 ) => {
   if (!req.isAuthenticated()) {
+    req.session.joinURL = req.originalUrl.includes('join') ? req.originalUrl : null;
     res.redirect('/auth/login');
     return;
   }

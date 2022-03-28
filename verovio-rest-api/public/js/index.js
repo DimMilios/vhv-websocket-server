@@ -16,6 +16,8 @@ documentList?.addEventListener('click', event => {
   if (currentElem) {
     let docId = Number(currentElem.dataset.docId);
     let doctitle = currentElem.querySelector('input[name="title"]')?.value;
+    console.log({ currentElem, docId, doctitle });
+
     if (doctitle) {
       window.open(`http://localhost:3001/client?docId=${docId}&roomname=${doctitle}`, '_blank');
     }
@@ -26,6 +28,7 @@ let deleteButtons = document.querySelectorAll('.document-delete');
 deleteButtons.forEach(btn => {
   btn.addEventListener('click', async event => {
     let currentElem = event.target.closest('tr');
+    console.log(`Clicked delete button ${currentElem}`)
 
     if (currentElem) {
       let docId = Number(currentElem.dataset.docId);
@@ -39,7 +42,7 @@ deleteButtons.forEach(btn => {
       console.log(response);
 
       if (response.status === 200) {
-        window.location.reload();
+        window.location = "http://localhost:3001/dashboard";
       }
     }
   });
@@ -104,11 +107,14 @@ shareButtons.forEach(btn => {
 let docUpdateForms = document.querySelectorAll('.edit-doc-form');
 docUpdateForms.forEach(form => {
   form.addEventListener('submit', async event => {
+    event.preventDefault();
+    
     let but = event.target.querySelector('input');
     but.type = but.type === 'search' ? 'text' : 'search';
-
-    event.preventDefault();
+    
     let docId = event.target.id.match(/(\d+)/)[0];
+    
+    console.log(`Submitted document update form for document: ${docId}`);
 
     let response = await fetch(`http://localhost:3001/api/documents/${docId}`, {
       method: 'PUT',

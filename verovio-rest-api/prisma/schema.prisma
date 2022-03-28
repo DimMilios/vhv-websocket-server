@@ -32,7 +32,7 @@ model Document {
 model PendingInvitations {
   user       User     @relation(fields: [email], references: [email])
   email      String
-  document   Document @relation(fields: [documentId], references: [id])
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
   documentId Int
 
   createdAt DateTime @default(now())

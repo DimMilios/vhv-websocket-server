@@ -66,7 +66,7 @@ router.delete('/:commentId',
     }
 
     const { userId, documentId, clientId } = req.body;
-    const commentId = req.params.commentId;
+    const commentId = req?.params?.commentId;
     console.log('DELETE /api/comments/:commentId', { commentId, userId, documentId, clientId, sessionUser: req.user });
 
     try {

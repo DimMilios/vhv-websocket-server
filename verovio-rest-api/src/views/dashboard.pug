@@ -74,9 +74,8 @@ block content
             td
               form.edit-doc-form(id=`edit-doc-${doc.id}`)
                 input.form-control.border-0(type="text", value=doc.title, name="title")
-              
-            td= doc.createdAt
             td= doc.updatedAt
+            td= doc.createdAt
             td
               ul.list-inline
                 for user, index in doc.users
