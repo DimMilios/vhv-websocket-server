@@ -39,20 +39,22 @@ router.post(
       
       req.login(user, (error) => {
         if (error) return next(error);
-        res
-          .cookie(
-            'user',
-            JSON.stringify({
-              id: user.id,
-              email: user.email,
-              name: user.name,
-              imageProfileURL: user.imageProfileURL,
-            })
-          );
+        res.cookie(
+          'user',
+          JSON.stringify({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            imageProfileURL: user.imageProfileURL,
+          })
+        );
 
         let session = req.session as any;
-
-        session?.joinURL ? res.redirect(session.joinURL) : res.redirect('/dashboard');
+        if (session?.joinURL) {
+          return res.redirect(session.joinURL);
+        } else {
+          return res.redirect('/dashboard');
+        }
       })
     })(req, res, next);
   },
