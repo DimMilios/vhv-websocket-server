@@ -50,20 +50,20 @@ let contextMenu = (clientId, elemRefId, targetX, targetY, handleClick) =>
     </div>
   `;
 
-let simpleIndicator = (clientId, elemRefId, targetX, targetY, staffY, name) => {
-  let dropUpHeight = document.querySelector('.dropup.btn-group')?.getBoundingClientRect().height || 0;
-  let singleSelectRef = document.querySelector(`[data-ref-id="${elemRefId}"]`);
-  if (singleSelectRef) {
-    let d = new DOMMatrix(window.getComputedStyle(singleSelectRef).getPropertyValue('transform'));
-    targetY = d.f - singleSelectRef.getBoundingClientRect().height - dropUpHeight;
-    console.log({ translateY: d.f, singleSelectHeight:singleSelectRef.getBoundingClientRect().height,  targetY})
-  } else {
-    targetY -= dropUpHeight;
-  }
+let simpleIndicator = (clientId, elemRefId, targetX, targetY, name) => {
+  // let dropUpHeight = document.querySelector('.dropup.btn-group')?.getBoundingClientRect().height || 0;
+  // let singleSelectRef = document.querySelector(`[data-ref-id="${elemRefId}"]`);
+  // if (singleSelectRef) {
+  //   let d = new DOMMatrix(window.getComputedStyle(singleSelectRef).getPropertyValue('transform'));
+  //   targetY = d.f - singleSelectRef.getBoundingClientRect().height - dropUpHeight;
+  //   console.log({ translateY: d.f, singleSelectHeight:singleSelectRef.getBoundingClientRect().height,  targetY})
+  // } else {
+  //   targetY -= dropUpHeight;
+  // }
 
   return html`<div
     class="users-div"
-    style="transform: translate(${targetX}px, ${targetY}px);"
+    style="transform: translate(${targetX}px, ${targetY - 25}px);"
     data-client-id=${clientId}
     data-ref-id=${elemRefId}
   >
@@ -106,14 +106,16 @@ export let userAwarenessTemplate = (clientId, elemRefId, name) => {
       console.log('Element does not have id');
     }
   };
-  const { targetX, targetY, staffY } = getCoordinatesWithOffset(
+  const { targetX, targetY } = getCoordinatesWithOffset(
     el,
     document.querySelector('#input')
   );
 
-  return html`${clientId == yProvider.awareness.clientID
-    ? contextMenu(clientId, elemRefId, targetX, targetY, handleClick)
-    : simpleIndicator(clientId, elemRefId, targetX, targetY, staffY, name)}`;
+  // return html`${clientId == yProvider.awareness.clientID
+  //   ? contextMenu(clientId, elemRefId, targetX, targetY, handleClick)
+  //   : simpleIndicator(clientId, elemRefId, targetX, targetY, staffY, name)}`;
+  let displayName = clientId == yProvider.awareness.clientID ? name : "You";
+  return html`${simpleIndicator(clientId, elemRefId, targetX, targetY, displayName)}`;
 };
 
 export let singleSelectTemplate = (clientId, elemRefId, color) => {
@@ -140,7 +142,6 @@ export const handleSingleComment = (notes, coords) => async (event) => {
   event.preventDefault();
 
   let content = event.target.querySelector('input[name="comment-text"]');
-  console.log('You sent:', content.value);
 
   let { docId: documentId } = getURLParams(['docId']);
 
