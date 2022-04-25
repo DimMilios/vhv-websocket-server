@@ -52,7 +52,7 @@ const resize = (inputCol, outputCol, commentsCol) => {
 // };
 
 export const layoutMachine = createMachine({
-  initial: 'notationAndTextVisible',
+  initial: 'notationVisible',
   context: {
     inputCol: 0,
     outputCol: 0,
@@ -86,7 +86,7 @@ export const layoutMachine = createMachine({
               outputCol: 12,
               commentsCol: 0,
             }),
-            ({ inputCol, outputCol, commentsCol }) => 
+            ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),
           ],
         },
@@ -100,11 +100,7 @@ export const layoutMachine = createMachine({
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
-              let editor = document.querySelector('#input');
-              if (editor) {
-                editor.style.width = '0px';
-              }
-              renderComments(commentState.comments);
+              renderComments(commentState.comments)
             }
           ],
         },
