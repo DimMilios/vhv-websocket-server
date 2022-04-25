@@ -6,6 +6,7 @@ import { getCoordinatesWithOffset } from '../collaboration/util-collab.js';
 import { yProvider } from '../yjs-setup.js';
 import { commentFormTemplate } from './commentForm.js';
 import * as commentService from '../api/comments.js';
+import { cache } from 'lit-html/directives/cache.js';
 import { setState, state } from '../state/comments.js';
 import { getAceEditor } from '../vhv-scripts/setup.js';
 
@@ -45,31 +46,30 @@ let contextMenu = (clientId, elemRefId, targetX, targetY, handleClick) =>
             data-toggle="popover"
             >Element details</a
           >
+          <!-- <a
+            class="context-menu-dropdown-item text-decoration-none text-reset p-1"
+            id=${'history-' + elemRefId}
+            href="#"
+            data-toggle="popover"
+            >History</a
+          > -->
         </div>
       </div>
     </div>
   `;
-
-let simpleIndicator = (clientId, elemRefId, targetX, targetY, name) => {
-  // let dropUpHeight = document.querySelector('.dropup.btn-group')?.getBoundingClientRect().height || 0;
-  // let singleSelectRef = document.querySelector(`[data-ref-id="${elemRefId}"]`);
-  // if (singleSelectRef) {
-  //   let d = new DOMMatrix(window.getComputedStyle(singleSelectRef).getPropertyValue('transform'));
-  //   targetY = d.f - singleSelectRef.getBoundingClientRect().height - dropUpHeight;
-  //   console.log({ translateY: d.f, singleSelectHeight:singleSelectRef.getBoundingClientRect().height,  targetY})
-  // } else {
-  //   targetY -= dropUpHeight;
-  // }
-
-  return html`<div
+let simpleIndicator = (clientId, elemRefId, targetX, targetY, name) =>
+  html`<div
     class="users-div"
-    style="transform: translate(${targetX}px, ${targetY - 25}px);"
+    style="transform: translate(${targetX}px, ${document.querySelector(
+      '.dropup.btn-group'
+    )
+      ? targetY - 50
+      : targetY - 25}px)"
     data-client-id=${clientId}
     data-ref-id=${elemRefId}
   >
     ${name}
   </div> `;
-}
 
 export let userAwarenessTemplate = (clientId, elemRefId, name) => {
   let el = document.getElementById(elemRefId);
@@ -102,6 +102,23 @@ export let userAwarenessTemplate = (clientId, elemRefId, name) => {
         commentFormTemplate(handleSingleComment([elemRefId], coords)),
         document.querySelector('#post-comment .modal-content')
       );
+    } else if (/^history/.test(id)) {
+      let editor = getAceEditor();
+      let undoManager = editor.getSession().getUndoManager();
+
+      console.log(undoManager.$undoStack);
+      console.log({ elemRefId })
+      let [ ,line, field, subfield ] = elemRefId.match(/-.*L(\d+)F(\d+)S?(\d+)?/);
+
+      line = parseInt(line, 10) - 1;
+
+      for (let item of undoManager.$undoStack) {
+        if (item[0].start.row == line && item[0].end.row == line) {
+          console.log('change for element line', item);
+          // editor.getSession().redoChanges(item, true);
+        }
+      }
+      
     } else {
       console.log('Element does not have id');
     }
@@ -111,11 +128,9 @@ export let userAwarenessTemplate = (clientId, elemRefId, name) => {
     document.querySelector('#input')
   );
 
-  // return html`${clientId == yProvider.awareness.clientID
-  //   ? contextMenu(clientId, elemRefId, targetX, targetY, handleClick)
-  //   : simpleIndicator(clientId, elemRefId, targetX, targetY, staffY, name)}`;
-  let displayName = clientId == yProvider.awareness.clientID ? name : "You";
-  return html`${simpleIndicator(clientId, elemRefId, targetX, targetY, displayName)}`;
+  return html`${clientId == yProvider.awareness.clientID
+    ? contextMenu(clientId, elemRefId, targetX, targetY, handleClick)
+    : simpleIndicator(clientId, elemRefId, targetX, targetY, name)}`;
 };
 
 export let singleSelectTemplate = (clientId, elemRefId, color) => {
@@ -142,6 +157,7 @@ export const handleSingleComment = (notes, coords) => async (event) => {
   event.preventDefault();
 
   let content = event.target.querySelector('input[name="comment-text"]');
+  console.log('You sent:', content.value);
 
   let { docId: documentId } = getURLParams(['docId']);
 
