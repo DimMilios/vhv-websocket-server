@@ -25,26 +25,26 @@ const userData: Prisma.UserCreateInput[] = [
   {
     email: 'dim@prisma.io',
     password: hashPassword('123', saltRounds),
-    name: 'Dimitris Milios',
+    name: 'Dimitris',
     imageProfileURL: 'http://localhost:3001/profile-icons/man.png',
     documents: {
       connect: [{ id: 1 }, { id: 2 }]
     }
   },
   {
-    email: 'nick@prisma.io',
+    email: 'anton@prisma.io',
     password: hashPassword('123', saltRounds),
-    name: 'Nikos Pappas',
-    imageProfileURL: 'http://localhost:3001/profile-icons/man2.png',
+    name: 'Antonis',
+    imageProfileURL: 'http://localhost:3001/profile-icons/man3.png',
     documents: {
       connect: [{ id: 1 }, { id: 2 }]
     }
   },
   {
-    email: 'maria@prisma.io',
+    email: 'george@prisma.io',
     password: hashPassword('123', saltRounds),
-    name: 'Maria Pappa',
-    imageProfileURL: 'http://localhost:3001/profile-icons/woman.png',
+    name: 'George',
+    imageProfileURL: 'http://localhost:3001/profile-icons/man2.png',
     documents: {
       connect: { id: 1 }
     }
@@ -68,18 +68,18 @@ async function main() {
     console.log(`Created user with id: ${user.id}`)
   }
 
-  for (const c of commentData) {
-    const comment = await prisma.comment.create({ data: c })
-    console.log(`Created comment with id: ${comment.id}`)
+  // for (const c of commentData) {
+  //   const comment = await prisma.comment.create({ data: c })
+  //   console.log(`Created comment with id: ${comment.id}`)
 
-    let a = await prisma.commentsOnDocumentsByUsers.create({
-      data: {
-        commentId: comment.id,
-        documentId: 1,
-        userId: Math.floor(Math.random() * 3) + 1
-      }
-    })
-  }
+  //   let a = await prisma.commentsOnDocumentsByUsers.create({
+  //     data: {
+  //       commentId: comment.id,
+  //       documentId: 1,
+  //       userId: Math.floor(Math.random() * 3) + 1
+  //     }
+  //   })
+  // }
 }
 
 main()

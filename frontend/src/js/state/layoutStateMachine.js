@@ -51,12 +51,35 @@ const resize = (inputCol, outputCol, commentsCol) => {
 //   };
 // };
 
+let SIZE = {
+  none: 0,
+  small1: 3,
+  small2: 4,
+  mid1: 6,
+  mid2: 8,
+  xl1: 9,
+  xl2: 12
+}
+
+/*
+  div#input col-2
+  div.container output-with-comments col-10
+    div#output.col-10
+    div#comments-section.col-2
+  0
+  2
+  4
+  8
+  10
+  12
+*/
+
 export const layoutMachine = createMachine({
-  initial: 'notationVisible',
+  initial: 'allVisible',
   context: {
-    inputCol: 0,
-    outputCol: 0,
-    commentsCol: 0,
+    inputCol: SIZE.small1,
+    outputCol: SIZE.xl2,
+    commentsCol: SIZE.small1,
   },
   states: {
     idle: {
@@ -66,9 +89,9 @@ export const layoutMachine = createMachine({
           target: 'notationVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.none,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),
@@ -82,9 +105,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndTextVisible',
           actions: [
             assign({
-              inputCol: 4,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.small2,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),
@@ -94,9 +117,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndCommentsVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 8,
-              commentsCol: 4,
+              inputCol: SIZE.none,
+              outputCol: SIZE.mid2,
+              commentsCol: SIZE.small2,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
@@ -108,9 +131,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndCommentsVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 8,
-              commentsCol: 4,
+              inputCol: SIZE.none,
+              outputCol: SIZE.mid2,
+              commentsCol: SIZE.small2,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
@@ -126,9 +149,9 @@ export const layoutMachine = createMachine({
           target: 'allVisible',
           actions: [
             assign({
-              inputCol: 2,
-              outputCol: 10,
-              commentsCol: 2,
+              inputCol: SIZE.small1,
+              outputCol: SIZE.xl1,
+              commentsCol: SIZE.small1,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
@@ -140,9 +163,9 @@ export const layoutMachine = createMachine({
           target: 'notationVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.none,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),
@@ -152,9 +175,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndCommentsVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 8,
-              commentsCol: 4,
+              inputCol: SIZE.none,
+              outputCol: SIZE.mid2,
+              commentsCol: SIZE.small2,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
@@ -170,9 +193,9 @@ export const layoutMachine = createMachine({
           target: 'allVisible',
           actions: [
             assign({
-              inputCol: 2,
-              outputCol: 10,
-              commentsCol: 2,
+              inputCol: SIZE.small1,
+              outputCol: SIZE.xl1,
+              commentsCol: SIZE.small1,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)();
@@ -184,9 +207,9 @@ export const layoutMachine = createMachine({
           target: 'notationVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.none,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)()
@@ -202,9 +225,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndCommentsVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 8,
-              commentsCol: 4,
+              inputCol: SIZE.none,
+              outputCol: SIZE.mid2,
+              commentsCol: SIZE.small2,
             }),
             ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),
@@ -214,9 +237,9 @@ export const layoutMachine = createMachine({
           target: 'notationAndTextVisible',
           actions: [
             assign({
-              inputCol: 4,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.small2,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) => {
               resize(inputCol, outputCol, commentsCol)()
@@ -228,9 +251,9 @@ export const layoutMachine = createMachine({
           target: 'notationVisible',
           actions: [
             assign({
-              inputCol: 0,
-              outputCol: 12,
-              commentsCol: 0,
+              inputCol: SIZE.none,
+              outputCol: SIZE.xl2,
+              commentsCol: SIZE.none,
             }),
             ({ inputCol, outputCol, commentsCol }) =>
               resize(inputCol, outputCol, commentsCol)(),

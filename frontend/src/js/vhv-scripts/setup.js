@@ -66,9 +66,9 @@ export function setupAceEditor(idtag) {
   ace.config.set('workerPath', '/scripts/ace');
   ace.config.set('themePath', '/scripts/ace');
 
-  // ace.config.set('modePath', "/scripts/ace");
-  // ace.config.set('workerPath', "/scripts/ace");
-  // ace.config.set('themePath', "/scripts/ace");
+  editor.renderer.setOption("theme", "ace/theme/humdrum_mcl_light");
+  editor.setTheme("ace/theme/humdrum_mcl_light");
+
   if (configureAce) {
     configureAceEditor();
     configureAce = false;
@@ -103,7 +103,7 @@ export function configureAceEditor() {
   editor.renderer.$cursorLayer.setBlinking(true);
 
   // editor.renderer.setOption('maxLines', 50);
-  editor.renderer.setOption('minLines', 50);
+  editor.renderer.setOption('minLines', 80);
   editor.renderer.setOption('hScrollBarAlwaysVisible', true);
   editor.renderer.setOption('vScrollBarAlwaysVisible', true);
 
@@ -113,7 +113,7 @@ export function configureAceEditor() {
     CURSOR_OBSERVER.observe(cursor, { attributes: true });
   }
 
-  editor.setTheme('ace/theme/humdrum_light');
+  // editor.setTheme("ace/theme/humdrum_mcl_light");
 }
 
 //////////////////////////////
