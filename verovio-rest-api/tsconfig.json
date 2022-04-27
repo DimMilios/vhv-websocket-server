@@ -8,9 +8,13 @@
     "allowJs": true,
     "target": "ES6",
     "moduleResolution": "Node",
-    "typeRoots": ["./global.d.ts"]
+    "typeRoots": ["./global.d.ts"],
+    "types": [
+      "node",
+      "mocha"
+    ]
   },
-  "include": ["src/**/*", "global.d.ts"],
+  "include": ["src/**/*.ts", "tests/**/*.ts", "global.d.ts"],
   "exclude": ["node_modules"],
   "ts-node": {
     "files": true

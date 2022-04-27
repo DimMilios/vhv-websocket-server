@@ -1,7 +1,6 @@
-import { Prisma } from '@prisma/client';
-import bcrypt from 'bcrypt';
-
 import prisma from '../src/config/db-client';
+import bcrypt from 'bcrypt';
+import { Prisma } from '@prisma/client';
 
 const documentData: Prisma.DocumentCreateInput[] = [
   { title: 'demo song 1' },
@@ -14,12 +13,12 @@ const commentData: Prisma.CommentCreateInput[] = [
   { content: 'This is a demo comment', parentComment: { connect: { id: 1 } } },
 ];
 
-const saltRounds = 12;
+const saltRounds = 5;
 const hashPassword = (password: string, saltRounds: number) => {
   let salt = bcrypt.genSaltSync(saltRounds);
   let hash = bcrypt.hashSync(password, salt);
   return hash;
-}
+};
 
 const userData: Prisma.UserCreateInput[] = [
   {
@@ -28,8 +27,8 @@ const userData: Prisma.UserCreateInput[] = [
     name: 'Dimitris',
     imageProfileURL: 'http://localhost:3001/profile-icons/man.png',
     documents: {
-      connect: [{ id: 1 }, { id: 2 }]
-    }
+      connect: [{ id: 1 }, { id: 2 }],
+    },
   },
   {
     email: 'anton@prisma.io',
@@ -37,8 +36,8 @@ const userData: Prisma.UserCreateInput[] = [
     name: 'Antonis',
     imageProfileURL: 'http://localhost:3001/profile-icons/man3.png',
     documents: {
-      connect: [{ id: 1 }, { id: 2 }]
-    }
+      connect: [{ id: 1 }, { id: 2 }],
+    },
   },
   {
     email: 'george@prisma.io',
@@ -46,46 +45,53 @@ const userData: Prisma.UserCreateInput[] = [
     name: 'George',
     imageProfileURL: 'http://localhost:3001/profile-icons/man2.png',
     documents: {
-      connect: { id: 1 }
-    }
+      connect: { id: 1 },
+    },
   },
 ];
 
-async function main() {
-  console.log('Start seeding...')
-  
+export interface SeedInclusions {
+  entity: 'User' | 'Document' | 'Comment';
+  clean: boolean;
+}
+
+export async function seedValues(seedEntities: SeedInclusions[]) {
+  let cleanUpQueries = [];
+  for (const s of seedEntities) {
+    let p;
+    switch (s.entity) {
+      case 'User':
+        p = prisma.user.deleteMany();
+        break;
+      case 'Document':
+        p = prisma.document.deleteMany();
+        break;
+      case 'Comment':
+        p = prisma.comment.deleteMany();
+        break;
+    }
+    cleanUpQueries.push(p);
+
+    if (s.clean) {
+      cleanUpQueries.push(
+        prisma.$executeRawUnsafe(
+          `UPDATE sqlite_sequence SET seq=0 WHERE name="${s.entity}"`
+        )
+      );
+    }
+  }
+
+  await prisma.$transaction(cleanUpQueries);
+
   for (const d of documentData) {
     const document = await prisma.document.create({
-      data: d
-    })
-    console.log(`Created document with id: ${document.id}`)
+      data: d,
+    });
   }
 
   for (const u of userData) {
     const user = await prisma.user.create({
-      data: u
-    })
-    console.log(`Created user with id: ${user.id}`)
+      data: u,
+    });
   }
-
-  // for (const c of commentData) {
-  //   const comment = await prisma.comment.create({ data: c })
-  //   console.log(`Created comment with id: ${comment.id}`)
-
-  //   let a = await prisma.commentsOnDocumentsByUsers.create({
-  //     data: {
-  //       commentId: comment.id,
-  //       documentId: 1,
-  //       userId: Math.floor(Math.random() * 3) + 1
-  //     }
-  //   })
-  // }
 }
-
-main()
-  .catch(e => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
