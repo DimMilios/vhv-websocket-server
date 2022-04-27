@@ -5,6 +5,7 @@
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "module": "commonjs",
     "allowJs": true,
     "target": "ES6",
     "moduleResolution": "Node",

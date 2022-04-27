@@ -4,3 +4,5 @@ node_modules
 # Ignore client builds
 client
 public-client
+
+dist

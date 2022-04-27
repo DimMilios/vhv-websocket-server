@@ -55,43 +55,52 @@ export interface SeedInclusions {
   clean: boolean;
 }
 
+/**
+ * Initialize database with values
+ * 
+ * **IMPORTANT**: entities with dependencies should come *AFTER* their dependents sequentially
+ * 
+ * @param seedEntities defines the types of prisma entities to be seeded
+ */
 export async function seedValues(seedEntities: SeedInclusions[]) {
-  let cleanUpQueries = [];
   for (const s of seedEntities) {
-    let p;
     switch (s.entity) {
-      case 'User':
-        p = prisma.user.deleteMany();
-        break;
-      case 'Document':
-        p = prisma.document.deleteMany();
-        break;
-      case 'Comment':
-        p = prisma.comment.deleteMany();
-        break;
-    }
-    cleanUpQueries.push(p);
-
-    if (s.clean) {
-      cleanUpQueries.push(
-        prisma.$executeRawUnsafe(
-          `UPDATE sqlite_sequence SET seq=0 WHERE name="${s.entity}"`
-        )
-      );
+    case 'Document':
+      for (const d of documentData) {
+        const doc = await prisma.document.create({
+          data: d,
+        });
+        console.log(`✨ Created document with id: ${doc.id} successfully created`);
+      }
+      break;
+    case 'User':
+      for (const u of userData) {
+        const user = await prisma.user.create({
+          data: u,
+        });
+        console.log(`✨ Created user with id: ${user.id} successfully created`);
+      }
+      break;
+    case 'Comment':
+      break;
     }
   }
+}
 
-  await prisma.$transaction(cleanUpQueries);
+export async function resetAll() {
+  const tablenames = await prisma.$queryRaw<
+    Array<{ tablename: string }>
+  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
 
-  for (const d of documentData) {
-    const document = await prisma.document.create({
-      data: d,
-    });
-  }
-
-  for (const u of userData) {
-    const user = await prisma.user.create({
-      data: u,
-    });
+  for (const { tablename } of tablenames) {
+    if (tablename !== '_prisma_migrations') {
+      try {
+        await prisma.$executeRawUnsafe(
+          `TRUNCATE TABLE "public"."${tablename}" RESTART IDENTITY CASCADE;`
+        );
+      } catch (error) {
+        console.log({ error });
+      }
+    }
   }
 }

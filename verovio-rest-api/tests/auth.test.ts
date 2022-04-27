@@ -1,7 +1,7 @@
 import request from 'supertest';
 import prisma from '../src/config/db-client';
 import { app } from '../src/server';
-import { SeedInclusions, seedValues } from './helpers';
+import { resetAll, SeedInclusions, seedValues } from './helpers';
 import { expect } from 'chai';
 
 describe('/auth', () => {
@@ -10,7 +10,7 @@ describe('/auth', () => {
       { entity: 'Document', clean: true },
       { entity: 'User', clean: true },
     ];
-
+    await resetAll();
     await seedValues(seedIncl);
   });
 

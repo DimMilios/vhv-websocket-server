@@ -7,6 +7,13 @@
     "dev": "nodemon src/index.ts",
     "dev-sqlite": "YPERSISTENCE=./prisma/dev.db npm run dev",
     "test": "mocha",
+    "start": "node dist/src/index.js",
+    "build": "tsc",
+    "set-up:dev": "npm run pg-db && npm run prisma:generate",
+    "prisma:generate": "node_modules/.bin/prisma db push",
+    "pg-db": "docker run --env-file .env --rm -p 5433:5432 postgres:13 -c fsync=off",
+    "set-up:test": "npm run pg-test-db && npm run prisma:generate",
+    "pg-test-db": "docker run --rm -p 5433:5432 postgres:13 -c fsync=off",
     "build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find $(dirname $SP) -type d -name frontend) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client",
     "local:build-client": "rm -rf ./client && rm -rf ./public-client && SP=$(pwd) && CP=$(find .. -type d -name frontend) && cd $CP && npm run clean:build && cp -rT ./dist $SP/client && cd $SP && mkdir ./public-client && find ./client -maxdepth 1 -mindepth 1 -not -name index.html -print0 | xargs -0 mv -t ./public-client"
   },
