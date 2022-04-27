@@ -1,3 +1,5 @@
+import dotenv from 'dotenv/config'
+
 import express from 'express';
 import type { ErrorRequestHandler } from 'express';
 import session from 'express-session';
