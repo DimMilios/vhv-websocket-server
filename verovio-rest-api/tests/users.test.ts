@@ -33,4 +33,11 @@ describe('/api/users', () => {
 
     expect(res.body).to.have.lengthOf(3);
   });
+  
+  it('GET / should fail if a document ID is not provided', async () => {
+    await agent
+      .get('/api/users')
+      .expect(400);
+  });
+  
 });

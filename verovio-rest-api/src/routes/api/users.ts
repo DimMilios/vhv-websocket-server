@@ -4,12 +4,17 @@ import { requireAuth } from '../../middleware/auth';
 
 import { URL } from 'url';
 import { dashboardDocuments } from '../../util/format';
+import CustomError from '../../util/error';
 
 export const router = express.Router();
 
 // Find all users for a document
 router.get('/', requireAuth, async (req, res, next) => {
   const docId = Number(req.query.docId);
+
+  if (Number.isNaN(docId)) {
+    return next(new CustomError(400, `bad ${docId} value`));
+  }
 
   try {
     const users = await prisma.user.findMany({

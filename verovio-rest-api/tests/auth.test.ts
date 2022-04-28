@@ -10,6 +10,7 @@ describe('/auth', () => {
       { entity: 'Document', clean: true },
       { entity: 'User', clean: true },
     ];
+
     await resetAll();
     await seedValues(seedIncl);
   });

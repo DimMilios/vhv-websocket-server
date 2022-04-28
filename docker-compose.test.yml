@@ -1,21 +1,25 @@
 version: '3.8'
 
 services:
-  web-test:
-    build: ./verovio-rest-api
-    command: npm test
-    volumes:
-      - ./verovio-rest-api:/usr/src/app
-    environment:
-      NODE_ENV: test
-      POSTGRES_URL: postgresql://root:root@127.0.0.1:5433/musicolab-testing
-
   pg:
     image: postgres:13.3
+    container_name: test-db
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: musicolab-testing
-      POSTGRES_URL: postgresql://root:root@127.0.0.1:5433/musicolab-testing
-    # config:
-    #   - fsync=off
+      POSTGRES_URL: postgresql://root:root@127.0.0.1:5432/musicolab-testing
+
+  test-server:
+    build:
+      context: ./verovio-rest-api
+      dockerfile: test.Dockerfile
+    container_name: test-server
+    image: test-server:tag
+    depends_on:
+      - test-db
+    volumes:
+      - ./verovio-rest-api:/usr/src/app
+    environment:
+      NODE_ENV: test
+      POSTGRES_URL: postgresql://root:root@pg:5432/musicolab-testing
