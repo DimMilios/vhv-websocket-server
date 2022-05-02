@@ -17,7 +17,6 @@ import { router as dashboardRouter } from './routes/dashboard';
 
 import CustomError from './util/error';
 import { requireAuthWithPath } from './middleware/auth';
-import { router as eventsRouter } from './routes/api/events';
 
 export const app = express();
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -54,7 +53,6 @@ app.get('/ping', async (_req, res) => {
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRouter);
-app.use('/events', eventsRouter);
 
 app.use('/api/users', userRouter);
 app.use('/api/comments', commentsRouter);

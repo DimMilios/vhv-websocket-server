@@ -3,7 +3,6 @@ import { validationResult } from 'express-validator';
 import prisma from '../../config/db-client';
 import { requireAuth } from '../../middleware/auth';
 import { commentCreateRules, commentDeleteRules } from '../../middleware/validators';
-import { notifySubs, subs } from './events';
 
 export const router = express.Router();
 
@@ -48,7 +47,6 @@ router.post('/', requireAuth, ...commentCreateRules, async (req: any, res) => {
 
     res.status(201).json(createdComment);
 
-    notifySubs(subs, clientId, documentId, { type: 'comments:create', createdComment });
   } catch (error) {
     console.log(error);
     res.status(400).json('Something went wrong');
@@ -78,8 +76,6 @@ router.delete('/:commentId',
         return res.status(400).json({ error: `Could not delete comment with id ${commentId}`});
       }
 
-      notifySubs(subs, clientId, documentId, { type: 'comments:delete', ids: [commentId] });
-      
       return res.status(200).json({ msg: `Comment of id: ${commentId} has been deleted` });
       
     } catch (error) {
@@ -101,8 +97,6 @@ router.delete('/:commentId',
         where: { usersDocuments: { every: { documentId: Number(documentId) } } },
       });
     
-    notifySubs(subs, clientId, documentId, { type: 'comments:delete', ids: doc?.usersComments.map(uc => uc.commentId) });
-      
     return res.status(200).json({ msg: `Comments for document with id: ${documentId} have been deleted` });
 
   } catch (error) {
