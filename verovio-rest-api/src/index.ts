@@ -5,7 +5,7 @@ import { app, sessionParser } from './server';
 // Init the global prisma client variable (imports fail for common js files)
 import prisma from './config/db-client';
 
-const PORT = 3001;
+const PORT = process.env.PORT ?? 3001;
 const server = app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });

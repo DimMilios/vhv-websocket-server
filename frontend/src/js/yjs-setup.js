@@ -1,22 +1,17 @@
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
-import { WebrtcProvider } from 'y-webrtc';
+// import { WebrtcProvider } from 'y-webrtc';
 import { updateHandler } from './collaboration/collab-extension.js';
 import { humdrumDataNoteIntoView } from './vhv-scripts/utility-ace.js';
 import { markItem } from './vhv-scripts/utility-svg.js';
-import { getAceEditor, insertSplashMusic } from './vhv-scripts/setup.js';
+import { getAceEditor } from './vhv-scripts/setup.js';
 import AceBinding from './AceBinding.js';
 import { setState, state } from './state/comments.js';
 import { multiSelectCoords } from './collaboration/templates.js';
 import Cookies from 'js-cookie';
-import { IndexeddbPersistence, storeState } from 'y-indexeddb';
 
 import * as userService from './api/users.js';
 import { baseUrl, getURLParams } from './api/util.js';
-import {
-  createDraggableContainer,
-  createNewEditorSession,
-} from './collaboration/svg-interaction.js';
 
 
 const names = [
@@ -49,37 +44,6 @@ let userData = {
   email: name + '@test.com',
   id: 1,
 };
-
-let lastSnapshot = null;
-const suffix = '-v1';
-
-/**
- * 
- * @param {Y.Item} item 
- * @returns {boolean}
- */
-// const gcFilter = (item) =>
-//   !Y.isParentOf(type, item) ||
-//   (lastSnapshot && (lastSnapshot.sv.get(item.id.client) || 0) <= item.id.clock);
-
-// export const versionDoc = new Y.Doc()
-// export const versionIndexeddbPersistence = new IndexeddbPersistence('website-version' + suffix, versionDoc);
-// export const versionType = versionDoc.getArray('versions');
-
-// versionIndexeddbPersistence.on('synced', () => {
-//   lastSnapshot = versionType.length > 0 ? Y.decodeSnapshot(versionType.get(0).snapshot) : Y.emptySnapshot
-//   versionType.observe(() => {
-//     const nextSnapshot = Y.decodeSnapshot(versionType.get(0).snapshot);
-//     yUndoManager.clear();
-//     Y.tryGc(nextSnapshot.ds, ydoc.store, gcFilter);
-//     lastSnapshot = nextSnapshot;
-//     storeState(indexeddbPersistence);
-//   })
-// })
-
-// const ydoc = new Y.Doc({ gcFilter });
-
-// export const indexeddbPersistence = new IndexeddbPersistence('website' + suffix, ydoc)
 
 export let yProvider;
 const ydoc = new Y.Doc();

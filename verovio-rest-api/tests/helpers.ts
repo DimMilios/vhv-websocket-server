@@ -82,6 +82,12 @@ export async function seedValues(seedEntities: SeedInclusions[]) {
       }
       break;
     case 'Comment':
+      for (const c of commentData) {
+        const comment = await prisma.comment.create({
+          data: c,
+        });
+        console.log(`✨ Created comment with id: ${comment.id} successfully created`);
+      }
       break;
     }
   }

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  pg:
+    image: postgres:13.3
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: musicolab-testing
+      POSTGRES_URL: postgresql://root:root@127.0.0.1:5432/musicolab-testing
+
+  web-server:
+    build:
+      context: ./verovio-rest-api
+      dockerfile: dev.Dockerfile
+    container_name: web-server
+    image: web-server:tag
+    ports:
+      - 3001:3001
+    depends_on:
+      - pg
+    volumes:
+      - ./verovio-rest-api:/usr/src/app
+    environment:
+      NODE_ENV: development
+      POSTGRES_URL: postgresql://root:root@pg:5432/musicolab-testing
