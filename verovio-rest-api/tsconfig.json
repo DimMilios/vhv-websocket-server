@@ -13,7 +13,7 @@
     "types": ["node", "mocha"]
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "global.d.ts"],
-  "exclude": ["node_modules", "src/config/websocket/**"],
+  "exclude": ["node_modules"],
   "ts-node": {
     "files": true
   }
