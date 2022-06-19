@@ -5,7 +5,7 @@ import { app, sessionParser } from './server';
 // Init the global prisma client variable (imports fail for common js files)
 import prisma from './config/db-client';
 
-const PORT = 3001;
+const PORT = process.env.PORT ?? 3001;
 const server = app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });
@@ -16,7 +16,11 @@ wss.on('connection', setupWSConnection(prisma));
 server.on('upgrade', (request: any, socket, head) => {
   // @ts-ignore
   sessionParser(request, {}, () => {
-    if (!request.session || !request.session.passport || !request.session.passport.user) {
+    if (
+      !request.session ||
+      !request.session.passport ||
+      !request.session.passport.user
+    ) {
       socket.destroy();
       return;
     }

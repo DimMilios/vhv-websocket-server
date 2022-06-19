@@ -1,4 +1,4 @@
-import dotenv from 'dotenv/config'
+import dotenv from 'dotenv/config';
 
 import express from 'express';
 import type { ErrorRequestHandler } from 'express';
@@ -20,7 +20,8 @@ import { requireAuthWithPath } from './middleware/auth';
 import { router as eventsRouter } from './routes/api/events';
 
 export const app = express();
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+// app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: '*', credentials: true }));
 
 app.use(express.static('public'));
 app.use(express.static('public-client'));
