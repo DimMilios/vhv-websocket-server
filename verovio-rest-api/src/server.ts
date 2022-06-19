@@ -25,7 +25,8 @@ app.use(cors({ origin: '*', credentials: true }));
 
 app.use(express.static('public'));
 app.use(express.static('public-client'));
-app.set('views', path.join(__dirname, 'views'));
+app.use(express.static('views'));
+// app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(express.json());

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "sourceMap": true,
+    "skipLibCheck": true,
     "outDir": "dist",
-    "strict": false,
+    "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
     "allowJs": true,
@@ -12,8 +13,8 @@
     "typeRoots": ["./global.d.ts"],
     "types": ["node", "mocha"]
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "global.d.ts"],
-  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts", "src/views/*.pug", "tests/**/*.ts", "global.d.ts"],
+  "exclude": ["node_modules", "src/config/websocket/**.js"],
   "ts-node": {
     "files": true
   }
