@@ -7,7 +7,7 @@ import prisma from './config/db-client';
 
 const PORT = process.env.PORT ?? 3001;
 const server = app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`);
+  console.log(`Server listening at port: ${PORT}`);
 });
 
 const wss = new Server({ noServer: true });
