@@ -18,6 +18,18 @@
   $ npm run build
   $ npm start
   ```
+- Apply prisma schema to the database
+  ```sh
+  $ npx prisma db push
+  ```
+- Generate prisma client
+  ```sh
+  $ npx prisma generate
+  ```
+- Put some test data to the database
+  ```sh
+  $ npx prisma db seed
+  ```
 
 ## Environment variables
 
