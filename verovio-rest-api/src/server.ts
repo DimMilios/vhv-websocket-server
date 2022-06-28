@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 export let sessionParser = session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 },
   name: 'auth',
-  secret: 'verysecuresecret',
+  secret: process.env.SESSION_SECRET as string,
   resave: true,
   saveUninitialized: true,
 });
@@ -56,7 +56,7 @@ app.get('/ping', async (_req, res) => {
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRouter);
-app.use('/events', eventsRouter);
+// app.use('/events', eventsRouter);
 
 app.use('/api/users', userRouter);
 app.use('/api/comments', commentsRouter);

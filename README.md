@@ -1,24 +1,30 @@
-## Προαπαιτούμενα
-Πρέπει να είναι εγκατεστημένα:
-- `node.js`
-- `npm` (Κατεβαίνει μαζί με το `node.js`)
+## Need to be installed
 
-## Εγκατάσταση dependencies και εκτέλεση
-- Εγκατάσταση dependencies για την εφαρμογή του `client`
-  ```sh
-  $ cd ./frontend
-  $ npm install
-  ```
-- Εγκατάσταση dependencies για την εφαρμογή του `server`
+- `node.js`
+- `npm` (Downloaded with `node.js`)
+
+## Project dependencies
+
+- Dependency installation for the API
   ```sh
   $ cd ./verovio-rest-api
   $ npm install
   ```
-- Παραγωγή client build στο server
+- Start the server in development mode
   ```sh
-  $ npm run local:build-client
+  $ npm run dev
   ```
-- Εκκίνηση του server (persistence σε `SQLite`)
+- Compile and run the server in production mode
   ```sh
-  $ npm run dev-sqlite
+  $ npm run build
+  $ npm start
   ```
+
+## Environment variables
+
+- `DATABASE_URL`: MySQL connection string
+  - E.g.: `DATABASE_URL=mysql://user:password@localhost:3306/database_name`
+- `PORT`: The port where the server will be accepting connections (default `3001`).
+- `SESSION_SECRET`: Secret string used for HTTP sessions.
+
+**Note**: These variables can be also passed by specifying a `.env` file located at project root.
