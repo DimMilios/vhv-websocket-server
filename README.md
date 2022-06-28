@@ -7,7 +7,6 @@
 
 - Dependency installation for the API
   ```sh
-  $ cd ./verovio-rest-api
   $ npm install
   ```
 - Start the server in development mode
