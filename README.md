@@ -18,6 +18,9 @@
   $ npm run build
   $ npm start
   ```
+
+## Database setup
+
 - Apply prisma schema to the database
   ```sh
   $ npx prisma db push
